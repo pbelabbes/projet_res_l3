@@ -23,16 +23,17 @@ struct sockaddr_in{
 
 int rendreService(int desc){
 
-	char* recep;
+	char recep[255];
 	
 	while(1){
 		read(desc, recep, 255);
+
 		printf("%s\n",recep);
 	}
 
 }
 
-
+//Pour tester 'nc 127.0.0.1 27000'
 int main(int argc,char *argv[]){
 	/* Création de la socket d'écoute */
 
