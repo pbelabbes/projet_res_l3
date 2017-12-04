@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -19,10 +20,22 @@ struct sockaddr_in{
 };*/
 
 
+int rendreService(int desc){
+
+	char* recep;
+	
+	while(1){
+		read(desc, recep, 255);
+		printf("%s\n",recep);
+	}
+
+}
 
 
 int main(int argc,char *argv[]){
 	/* Création de la socket d'écoute */
+
+	printf("%s\n","Création de la socket d'écoute" );
 	struct sockaddr_in s;
 	int i;
 	int p = socket(AF_INET,SOCK_STREAM,0);
@@ -34,15 +47,34 @@ int main(int argc,char *argv[]){
 	}
 	
 	/*Attachement de la socket d'écoute*/
+	printf("%s\n","bind de la socket d'écoute" );
 	bind(p,(struct sockaddr*) &s, sizeof(s));
 	
 	/*Ouverture de service sur la socket d'écoute */
+
+	printf("%s\n","Début d'écoute" );
 	listen(p,4);
 	/*Boucle infinie*/
 	struct sockaddr_in client;
 	int c_length;
-	while(0){
-		accept(p, (struct sockaddr*) &client, &c_length); 
+	while(1){
+		int servSock = accept(p, (struct sockaddr*) &client, &c_length);
+
+		switch(fork()){
+
+			//Gestion d'erreur
+			case -1 :
+				perror ("fork") ;
+       			 exit (-1) ;
+			break;
+
+			//Fils
+			case 0 : 
+			close (p);
+			rendreService(servSock);
+		}
+
+		close(servSock); 
 	}
 	return 0;
 }
