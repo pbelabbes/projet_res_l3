@@ -1,3 +1,4 @@
+﻿/* auteurs soussi sirine, pierre baudriller , romain brunet , pierre belabbes  */
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
