@@ -10,7 +10,10 @@
 
 void fctclient (int p)
 {
-char tab[255]="bonjour";
+char tab[255];
+
+scanf ("%s",tab);
+printf ("%s",tab);
 
 write (p,tab, sizeof (tab) );
 
@@ -18,7 +21,7 @@ write (p,tab, sizeof (tab) );
 
 
 int main(int argc,char *argv[]){
-	
+
 /* Création de la socket */
 printf("%s\n","Création de la socket " );
 	struct sockaddr_in s;
@@ -27,8 +30,16 @@ printf("%s\n","Création de la socket " );
 	struct hostent *h ;
 	char l[1000];
  
+	int numPort;
+
+	if (argc > 0) 
+	 {numPort = atoi(argv[2]);}
+	else { numPort = 27000;}
+	
+	s.sin_port = htons(numPort);
 	s.sin_family = AF_INET;
-	s.sin_port = htons(27000);
+	
+	//s.sin_port = htons(27000);
 	s.sin_addr.s_addr = htonl(INADDR_ANY);
 	for(i=0;i<8;i++){
 		s.sin_zero[i]=0;
@@ -36,7 +47,7 @@ printf("%s\n","Création de la socket " );
 
 
 	/*recupération des information */
-	// gethostname(l, 1000);									
+	// gethostname(l,1000);									
     h = gethostbyname("localhost");
     printf("hostname %s\n", h->h_name);
 
