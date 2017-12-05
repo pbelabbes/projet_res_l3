@@ -1,4 +1,4 @@
-﻿/* auteurs soussi sirine, pierre baudriller , romain brunet , pierre belabbes  */
+/* auteurs soussi sirine, pierre baudriller , romain brunet , pierre belabbes  */
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -23,11 +23,11 @@ struct sockaddr_in{
 
 int rendreService(int desc){
 
+	printf("%s\n","Prêt à rendre service" );
 	char recep[255];
 	
 	while(1){
 		read(desc, recep, 255);
-
 		printf("%s\n",recep);
 	}
 
@@ -54,20 +54,21 @@ int main(int argc,char *argv[]){
 	
 	/*Ouverture de service sur la socket d'écoute */
 
-	printf("%s\n","Début d'écoute" );
 	listen(p,4);
 	/*Boucle infinie*/
 	struct sockaddr_in client;
 	int c_length;
 	while(1){
+		printf("%s\n","Début d'écoute" );
 		int servSock = accept(p, (struct sockaddr*) &client, &c_length);
 
+		printf("%s\n","connecté au client" );
 		switch(fork()){
 
 			//Gestion d'erreur
 			case -1 :
 				perror ("fork") ;
-       			 exit (-1) ;
+       			exit (-1) ;
 			break;
 
 			//Fils
