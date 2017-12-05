@@ -2,15 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define TVILLE 100 /*faire des malloc ? */
+#define TVILLE 100
 #define TMAX 100
 
-
-
-void duree(char h_debut[TMAX], char h_fin[TMAX])
+char* duree(char h_debut[TMAX], char h_fin[TMAX])
 {
 	int h1, h2, min1, min2, h3, min3, temps1, temps2, difference;
-	char temps[5], tmp[5];
+	char *temps=malloc(25), tmp[5];
 	
 	h1 = atoi(strtok(h_debut, ":"));
 	min1 = atoi(strtok(NULL, ":"));
@@ -26,24 +24,22 @@ void duree(char h_debut[TMAX], char h_fin[TMAX])
 	h3 = (difference- min3) / 60;
 
 	snprintf(temps, 5, "%d", h3);
-	strcat(temps,"h"); 
+	strcat(temps,"h");
 	snprintf(tmp, 5, "%d", min3);
 	strcat(temps,tmp);
 	strcat(temps,"min"); 
-	printf("temps : %s \n", temps);
+	
+	return temps;
 	
 }
 
-
-
 int main ()
 {
-	char horaire_dep[] = "15:40", horaire_fin[] = "18:20", temps[5];
-	duree(horaire_dep, horaire_fin);
-	
-	
-	return 0;
+	char horaire_dep[] = "15:40", horaire_fin[] = "18:20";	
+	char * x = duree(horaire_dep, horaire_fin);
+	printf("duree : %s \n ", x);
 
+	return 0;
 }
 
 
