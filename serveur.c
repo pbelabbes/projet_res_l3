@@ -45,8 +45,11 @@ int main(int argc,char *argv[]){
 	struct sockaddr_in s;
 	int i;
 	int p = socket(AF_INET,SOCK_STREAM,0);
+	
+	int numPort = (argc > 1 )?atoi(argv[1]):27000;
+	printf("%s%d\n","connexion au port : ",numPort );
 	s.sin_family = AF_INET;
-	s.sin_port = htons(27000);
+	s.sin_port = htons(numPort);
 	s.sin_addr.s_addr = htonl(INADDR_ANY);
 	for(i=0;i<8;i++){
 		s.sin_zero[i]=0;
