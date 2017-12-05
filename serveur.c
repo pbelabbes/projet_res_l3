@@ -1,4 +1,4 @@
-/* auteurs soussi sirine, pierre baudriller , romain brunet , pierre belabbes  */
+﻿/*auteurs soussi sirine, pierre baudriller , romain brunet , pierre belabbes  */
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -25,13 +25,17 @@ int rendreService(int desc){
 
 	printf("%s\n","Prêt à rendre service" );
 	char recep[255];
-	
-	while(1){
-		read(desc, recep, 255);
-		printf("%s\n",recep);
+	int stop = 1;
+
+	while(stop > 0){
+		stop = read(desc, recep, 255);
+		if(stop) printf("%s\n",recep);
 	}
 
+	exit(0);
 }
+
+
 
 //Pour tester 'nc 127.0.0.1 27000'
 int main(int argc,char *argv[]){
