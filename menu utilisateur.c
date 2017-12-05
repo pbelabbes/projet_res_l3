@@ -2,76 +2,12 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-
-#define TVILLE 100 /*faire des malloc ? */
-#define TMAX 100
-
-
-
-
-int duree(char[TAILLE_MAX] h_debut, char[TAILLE_MAX] h_fin)
-{
-	char *h1, *h2, *min1, *min2;
-	int duree;
-
-	*h1 = strtok(h_debut, ":");
-	*min1 = strtok(NULL, ":");
-
-	*h2 = strtok(h_fin, ":");
-	*min2 = strtok(NULL, ":");
-
-	// gerer si train arrive tot le matin
-
-        duree = h2 - h1;
-        return duree;
-}
-
-
-
-
-int compare_ville(char *ville1, char *ville2)
-{
-	return strcmp(ville1, ville2);	
-}
-
-void villes(FILE *f, char *user_depart, char *user_arrivee)
-{
-	
-	char *train = NULL, *depart, *arrivee;
-	size_t bufsize = TMAX;
-	int res;
-
-	train = (char *)malloc(TMAX);
-
-	while(!feof(f))
-  	{
-		getline(&train,&bufsize , f);
-		depart = strtok(train, ";");
-		printf("%s \n",depart);
-	
-		arrivee= strtok(NULL, ";");
-		printf("%s \n",arrivee);
-
-		res =  compare_ville(user_depart, depart);
-		printf("%d \n",res);
-	}
-	fclose(f);	
-}
-
 int main ()
 {
-	FILE *f = NULL;
+	
 	int choix = -1, choix2 = -1;
 	char ville_depart[TVILLE], ville_arrivee[TVILLE];
 	char horaire[5], horaire_dep[5], horaire_fin[5];
-
-
-	f=fopen("Trains.txt", "r");
-	if(f == NULL)
-	{
-		printf("Erreur ouverture fichier \n");
-		exit(0);
-	}
 
 	printf("Bienvenue !\n\n");
 	while(choix != 0)
@@ -96,11 +32,6 @@ int main ()
 				scanf("%s",ville_arrivee);
 				printf("\nHoraire de depart (format xxhyy) : ");
 				scanf("%s",horaire);
-
-
-
-				villes(f);
-
 				break;
 
 			case 2:
@@ -126,7 +57,7 @@ int main ()
 				printf("code 2 : Trie par rapport au temps de trajet \n ");
 				scanf("%d", &choix2);
 				
-				/*switch(choix2)
+				switch(choix2)
 				{
 					case 0:
 						break;
@@ -134,7 +65,7 @@ int main ()
 						break;
 					case 2:
 						break;
-				}*/
+				}
 			case 4 :
 				system("cat trains.txt");
 				printf("\n\n");
@@ -149,4 +80,3 @@ int main ()
 	return 0;
 
 }
-
