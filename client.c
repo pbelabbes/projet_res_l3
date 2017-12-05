@@ -32,8 +32,12 @@ printf("%s\n","Création de la socket " );
  
 	int numPort;
 
-	if (argc > 0) 
-	 {numPort = atoi(argv[2]);}
+//printf ("%s\n",argv[1]);
+printf ("%d\n",argc);
+
+
+	if (argc > 1) 
+	 {numPort = atoi(argv[1]);}
 	else { numPort = 27000;}
 	
 	s.sin_port = htons(numPort);
