@@ -3,10 +3,11 @@
 #include <unistd.h>
 #include <string.h>
 
-// reduc : 0 si pas de reduction, 1 si 20% de reduction, 2 si 10% de suppl�ment
-int prix(int p_initial, int reduc)
+//reduc : 0 si pas de reduction, 1 si 20% de reduction, 2 si 10% de supplément
+//retourne le prix après le calcul
+float prix(float p_initial, int reduc)
 {
-	int p;
+	float p;
 
 	switch (reduc)
 	{
@@ -25,7 +26,7 @@ int prix(int p_initial, int reduc)
 
 int main ()
 {
-	printf("prix : %d", prix(50,2));				
+	printf("prix : %.2f", prix(50,0));				
 	
 	return 0;
 
