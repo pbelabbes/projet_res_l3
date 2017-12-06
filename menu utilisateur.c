@@ -16,7 +16,7 @@ int main ()
 		printf("code 2 : Liste des trains : \n \t - Ville de depart \n \t - Ville d'arrivee \n \t - Debut tranche horaire de depart \n \t - Fin tranche horaire de depart\n\n");
 		printf("code 3 : Liste des trains  : \n \t - Ville de depart \n \t - Ville d'arrivee \n\n");
 		printf("code 4 : Afficher le fichier trains.txt \n\n");
-		printf("Que voulez vous obtenir ? (0 pour quitter) : ");
+		//printf("Que voulez vous obtenir ? (0 pour quitter) : ");
 		scanf("%d",&choix);
 		printf("\n");
 
@@ -25,13 +25,14 @@ int main ()
 			case 0: 
 				printf("A bientot ! \n");
 				exit(1);
-			case 1:
+			case 1: //Afficher train
 				printf("Ville de depart : ");
 				scanf("%s",ville_depart);
 				printf("\nVille d'arrivee : ");
 				scanf("%s",ville_arrivee);
 				printf("\nHoraire de depart (format xxhyy) : ");
 				scanf("%s",horaire);
+				//Préparer requete "1;ville_depart;ville_arrivee;horaire"
 				break;
 
 			case 2:
@@ -43,6 +44,7 @@ int main ()
 				scanf("%s",horaire_dep);
 				printf("\nFIN tranche horaire de depart (format xxhyy) : ");
 				scanf("%s",horaire_fin);
+				//Préparer requete "2;ville_depart;ville_arrivee;horaire_dep;horaire_fin" 
 				break;
 
 			case 3:
@@ -50,6 +52,8 @@ int main ()
 				scanf("%s",ville_depart);
 				printf("Ville d'arrivee : ");
 				scanf("%s",ville_arrivee);
+				//Préparer requete "3;ville_depart;ville_arrivee;0"
+				//Traiter la requete 
 				/* affichage */
 
 				printf("Trier cette liste ? (0 si non) \n");
@@ -59,11 +63,12 @@ int main ()
 				
 				switch(choix2)
 				{
-					case 0:
+					
+					case 1: //Affichage trié par prix
+						//Préparer requete "3;ville_depart;ville_arrivee;1"
 						break;
-					case 1:
-						break;
-					case 2:
+					case 2: // Affichage trié par durée
+						//Préparer requete "3;ville_depart;ville_arrivee;2"
 						break;
 				}
 			case 4 :
