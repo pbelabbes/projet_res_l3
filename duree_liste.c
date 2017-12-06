@@ -299,24 +299,16 @@ int main(){
 			i++;
 		}
 		//afficher_liste_train(liste);
-
-
 		afficher_train(duree_opti(liste));
 
 		for(i=0;i<21;i++){
 			//printf("Ligne no : %d\n",i+1);
 			//afficher_train(tabTrains[i]);
 		}
-	}
-
-	
-	
+	}	
 	free(train);
 	fclose(f);
 
 	return 0;
 
 }
-
-
-
