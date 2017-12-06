@@ -1,12 +1,5 @@
 ﻿/*auteurs soussi sirine, pierre baudriller , romain brunet , pierre belabbes  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <signal.h>
-#include <wait.h>
+#include "serveur.h"
 
 /*
 struct in_addr{
