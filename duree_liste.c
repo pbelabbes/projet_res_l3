@@ -118,6 +118,7 @@ void afficher_liste_train(llist l)
 	}
 }
 
+//retourne la durée en minutes sous forme d'un int pour les calculs
 int duree_int(char h_debut[TMAX], char h_fin[TMAX])
 {
 	int h1, h2, min1, min2, temps1, temps2, difference;
@@ -147,6 +148,7 @@ void afficher_train(InfosTrain train)
 	printf("Reduction : %s\n",train.reduction);
 }
 
+//retourne la durée sous forme d'un string (pour l'afficher après par ex)
 char* duree_string(int difference)
 {
 	int h3, min3;
