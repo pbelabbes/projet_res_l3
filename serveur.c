@@ -5,8 +5,9 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
-//#include <signal.h>
-//#include <wait.h>
+#include <signal.h>
+#include <wait.h>
+
 /*
 struct in_addr{
 	u_long s_addr;
@@ -40,9 +41,24 @@ int rendreService(int desc){
 }
 
 
+void finfils(int sig){
+
+	wait(0);
+}
 
 //Pour tester 'nc 127.0.0.1 27000'
 int main(int argc,char *argv[]){
+
+	/* Préparation de la gestion des fils*/ 
+
+	struct sigaction a;
+
+	a.sa_handler = finfils;
+
+	a.sa_flags = SA_RESTART;
+
+	sigaction(SIGCHLD, &a, NULL);
+
 	/* Création de la socket d'écoute */
 
 	printf("%s\n","Création de la socket d'écoute" );
