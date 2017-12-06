@@ -1,12 +1,6 @@
 ﻿/*auteurs soussi sirine, pierre baudriller , romain brunet , pierre belabbes  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-//#include <signal.h>
-//#include <wait.h>
+#include "serveur.h"
+
 /*
 struct in_addr{
 	u_long s_addr;
@@ -29,16 +23,33 @@ int rendreService(int desc){
 
 	while(stop > 0){
 		stop = read(desc, recep, 255);
-		if(stop) printf("%s\n",recep);
+		if(stop) printf("%s\n",recep); //1;params
+		//char* traiterRequete(char* requete);
+		write(desc,recep,255);
 	}
 
 	exit(0);
 }
 
 
+void finfils(int sig){
+
+	wait(0);
+}
 
 //Pour tester 'nc 127.0.0.1 27000'
 int main(int argc,char *argv[]){
+
+	/* Préparation de la gestion des fils*/ 
+
+	struct sigaction a;
+
+	a.sa_handler = finfils;
+
+	a.sa_flags = SA_RESTART;
+
+	sigaction(SIGCHLD, &a, NULL);
+
 	/* Création de la socket d'écoute */
 
 	printf("%s\n","Création de la socket d'écoute" );

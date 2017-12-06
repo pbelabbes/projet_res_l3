@@ -1,4 +1,4 @@
- 17564;Valence;Grenoble;6:15;7:31;17.60;REDUC
+17564;Valence;Grenoble;6:15;7:31;17.60;REDUC
 17566;Valence;Grenoble;6:45;7:55;17.60;
 17568;Valence;Grenoble;7:15;8:32;17.60;
 17524;Grenoble;Valence;16:30;17:45;17.60;
