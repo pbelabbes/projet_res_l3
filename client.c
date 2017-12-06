@@ -8,11 +8,13 @@
 #include <unistd.h>
 #define TVILLE 500
 
-void sendRequest (int p,char *request)
+char* sendRequest (int p,char *request)
 {
-	printf("%lu\n", strlen(request) );
+	char* response = malloc(255);
 	write (p,request, strlen(request));
-
+	printf("%s\n","En attente de réponse ..." );
+	read(p,response,255);
+	return response;
 }
 
 //Prepare la requête à partir des données passées
@@ -38,6 +40,7 @@ void IHM ( int p){
 	char horaire[5], horaire_dep[5], horaire_fin[5];
 	char  m_prix [5],d_optimum[5];
 	char request[1000];
+	char* response;
 	printf ("Binvenue \n");
 	printf("code 1 : Premier train existant : \n \t - Ville de depart \n \t - Ville d'arrivee \n \t- Horaire de depart\n\n");
 	printf("code 2 : Liste des trains : \n \t - Ville de depart \n \t - Ville d'arrivee \n \t - Debut tranche horaire de depart \n \t - Fin tranche horaire de depart\n\n");
@@ -65,7 +68,8 @@ void IHM ( int p){
 
 		prepareRequest(datas_1,request,4);
 		printf("%s\n",request);
-		sendRequest(p,request);
+		response = sendRequest(p,request);
+		printf("%s\n",response );
 		break;
 
 
@@ -82,8 +86,8 @@ void IHM ( int p){
 
 		char* datas_2[5]={"2",ville_depart,ville_arrivee,horaire_dep,horaire_fin};
 		prepareRequest(datas_2,request,5);
-		sendRequest(p,request);
-		printf("%s\n", request);
+		response = sendRequest(p,request);
+		printf("%s\n",response );
 		break;
 
 		case 3:
@@ -94,9 +98,9 @@ void IHM ( int p){
 
 		char* datas_3[4]={"3",ville_depart,ville_arrivee,"0"};
 		prepareRequest(datas_3,request,4);
-		sendRequest(p,request);
-		printf("%s\n", request);
-
+		response = sendRequest(p,request);
+		printf("%s\n",response );
+		
 		/* affichage */
 
 		printf("Trier cette liste ? (0 si non) \n");
@@ -112,16 +116,16 @@ void IHM ( int p){
 			char* datas_4[4]={"3",ville_depart,ville_arrivee,"1"};
 			prepareRequest(datas_4,request,4);
 			printf("%s\n",request);
-			sendRequest(p,request);
-			
+			response = sendRequest(p,request);
+			printf("%s\n",response );	
 			break;
 			case 2:
 			printf("%s\n","Choix 2" );
 			char* datas_5[4]={"3",ville_depart,ville_arrivee,"2"};
 			prepareRequest(datas_5,request,4);
 			printf("%s\n",request);
-			sendRequest(p,request);
-
+			response = sendRequest(p,request);
+			printf("%s\n",response );
 			break;
 		}
 		break;
@@ -150,10 +154,6 @@ int main(int argc,char *argv[]){
 	char l[1000];
 
 	int numPort;
-
-//printf ("%s\n",argv[1]);
-	printf ("%d\n",argc);
-
 
 	if (argc > 1) 
 		{numPort = atoi(argv[1]);}
