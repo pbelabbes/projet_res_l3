@@ -8,14 +8,10 @@
 #include <unistd.h>
 #define TVILLE 500
 
-void fctclient (int p)
+void sendRequest (int p,char *request)
 {
-	char tab[255];
-
-	scanf ("%s",tab);
-	printf ("%s",tab);
-
-	write (p,tab, sizeof (tab) );
+	printf("%lu\n", strlen(request) );
+	write (p,request, strlen(request));
 
 }
 
@@ -36,7 +32,7 @@ void prepareRequest(char** datas,char* request, int taille){ // [code,ville ... 
 
 
 
-void IHM ( ){
+void IHM ( int p){
 	int choix = -1, choix2 = -1;
 	char ville_depart[TVILLE], ville_arrivee[TVILLE];
 	char horaire[5], horaire_dep[5], horaire_fin[5];
@@ -46,7 +42,7 @@ void IHM ( ){
 	printf("code 1 : Premier train existant : \n \t - Ville de depart \n \t - Ville d'arrivee \n \t- Horaire de depart\n\n");
 	printf("code 2 : Liste des trains : \n \t - Ville de depart \n \t - Ville d'arrivee \n \t - Debut tranche horaire de depart \n \t - Fin tranche horaire de depart\n\n");
 	printf("code 3 : Liste des trains  : \n \t - Ville de depart \n \t - Ville d'arrivee \n\n");
-//printf("code 4 : Afficher le fichier trains.txt \n\n");
+	//printf("code 4 : Afficher le fichier trains.txt \n\n");
 	printf("Que voulez vous obtenir ? (0 pour quitter) : ");
 	scanf("%d",&choix);
 	printf("\n");
@@ -63,12 +59,13 @@ void IHM ( ){
 		scanf("%s",ville_arrivee);
 		printf("\nHoraire de depart (format hh:mm) : ");
 		scanf("%s",horaire);
-		
+
 
 		char* datas_1[4] = {"1",ville_depart,ville_arrivee,horaire};
 
 		prepareRequest(datas_1,request,4);
 		printf("%s\n",request);
+		sendRequest(p,request);
 		break;
 
 
@@ -85,6 +82,7 @@ void IHM ( ){
 
 		char* datas_2[5]={"2",ville_depart,ville_arrivee,horaire_dep,horaire_fin};
 		prepareRequest(datas_2,request,5);
+		sendRequest(p,request);
 		printf("%s\n", request);
 		break;
 
@@ -96,6 +94,7 @@ void IHM ( ){
 
 		char* datas_3[4]={"3",ville_depart,ville_arrivee,"0"};
 		prepareRequest(datas_3,request,4);
+		sendRequest(p,request);
 		printf("%s\n", request);
 
 		/* affichage */
@@ -113,12 +112,15 @@ void IHM ( ){
 			char* datas_4[4]={"3",ville_depart,ville_arrivee,"1"};
 			prepareRequest(datas_4,request,4);
 			printf("%s\n",request);
+			sendRequest(p,request);
+			
 			break;
 			case 2:
 			printf("%s\n","Choix 2" );
 			char* datas_5[4]={"3",ville_depart,ville_arrivee,"2"};
 			prepareRequest(datas_5,request,4);
 			printf("%s\n",request);
+			sendRequest(p,request);
 
 			break;
 		}
@@ -138,9 +140,6 @@ void IHM ( ){
 
 int main(int argc,char *argv[]){
 
-/* Creation de la requete */
-
-	IHM();
 
 /* Création de la socket */
 	printf("%s\n","Création de la socket " );
@@ -186,7 +185,8 @@ int main(int argc,char *argv[]){
 		printf("%s\n", "erreur de connexion" );
 
 	}else printf("%s\n","connexion avec succès" );
-	fctclient(p); 
+	
+	IHM(p);
 	return 0;
 
 }
