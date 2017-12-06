@@ -25,9 +25,6 @@ int rendreService(int desc){
 		stop = read(desc, recep, 255);
 		if(stop) printf("%s\n",recep); //1;params
 		//char* traiterRequete(char* requete);
-		//char* afficher_train( char* gare_depart, char* gare_arrivee, char* horaire);
-		//char* afficher_trains_tranche( char* gare_depart, char* gare_arrivee, char* horaire_depart, char* horaire_arrivee);
-		//char* afficher_horaires( char* gare_depart, char* gare_arrivee, int tri)	; ( trie : 0 -> pas de trie, 1 -> tri prix, 2 -> tri durée)
 		write(desc,recep,255);
 	}
 
