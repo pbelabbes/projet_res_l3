@@ -3,7 +3,8 @@
 #include <unistd.h>
 #include <string.h>
 
-// reduc : 0 si pas de reduction, 1 si 20% de reduction, 2 si 10% de suppl�ment
+//reduc : 0 si pas de reduction, 1 si 20% de reduction, 2 si 10% de supplément
+//retourne le prix après le calcul
 int prix(int p_initial, int reduc)
 {
 	int p;
