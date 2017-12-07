@@ -75,9 +75,10 @@ int main(int argc,char *argv[]){
 	listen(p,4);
 	/*Boucle infinie*/
 	struct sockaddr_in client;
-	int c_length;
+	unsigned int c_length;
 	while(1){
 		printf("%s\n","Début d'écoute" );
+
 		int servSock = accept(p, (struct sockaddr*) &client, &c_length);
 
 		printf("%s\n","connecté au client" );

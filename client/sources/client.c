@@ -34,7 +34,6 @@ void IHM ( int p){
 	int choix = -1, choix2 = -1;
 	char ville_depart[TVILLE], ville_arrivee[TVILLE];
 	char horaire[5], horaire_dep[5], horaire_fin[5];
-	char  m_prix [5],d_optimum[5];
 	char request[1000];
 	char* response;
 	printf ("Binvenue \n");
@@ -147,7 +146,6 @@ int main(int argc,char *argv[]){
 	int i;
 	int p = socket(AF_INET,SOCK_STREAM,0);
 	struct hostent *h ;
-	char l[1000];
 
 	int numPort;
 
