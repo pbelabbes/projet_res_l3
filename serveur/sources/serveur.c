@@ -13,7 +13,9 @@ struct sockaddr_in{
 	char sin_zero[8];//par défaut = 0
 };*/
 
-
+/**
+	Recoit les données du client et envoit la réponse vers le client
+*/
 int rendreService(int desc){
 
 	printf("%s\n","Prêt à rendre service" );
@@ -30,16 +32,18 @@ int rendreService(int desc){
 	exit(0);
 }
 
-
+/**
+	handler réagissant au signal de mort d'un fils pour que le père acquiesse sa mort
+*/
 void finfils(int sig){
 
 	wait(0);
 }
 
-//Pour tester 'nc 127.0.0.1 27000'
+
 int main(int argc,char *argv[]){
 
-	/* Préparation de la gestion des fils*/ 
+	/* Mise en place du handler */ 
 
 	struct sigaction a;
 
@@ -47,7 +51,10 @@ int main(int argc,char *argv[]){
 
 	a.sa_flags = SA_RESTART;
 
-	sigaction(SIGCHLD, &a, NULL);
+	if (sigaction(SIGCHLD, &a, NULL) == -1){
+		perror("Erreur de gestion de signal");
+		exit(1);
+	}
 
 	/* Création de la socket d'écoute */
 
@@ -65,14 +72,23 @@ int main(int argc,char *argv[]){
 		s.sin_zero[i]=0;
 	}
 	
-	/*Attachement de la socket d'écoute*/
+	/* binding de la socket d'écoute */
+
 	printf("%s\n","bind de la socket d'écoute" );
-	bind(p,(struct sockaddr*) &s, sizeof(s));
+	if (bind(p,(struct sockaddr*) &s, sizeof(s)) == -1){
+		perror("Erreur de binding");
+		exit(1);
+	}
 
 	
 	/*Ouverture de service sur la socket d'écoute */
 
-	listen(p,4);
+	if (listen(p,4)){
+		perror("Erreur de mise en écoute");
+		exit(1);
+	}
+
+
 	/*Boucle infinie*/
 	struct sockaddr_in client;
 	unsigned int c_length;
@@ -88,16 +104,22 @@ int main(int argc,char *argv[]){
 			//Gestion d'erreur
 			case -1 :
 				perror ("fork") ;
-       			exit (-1) ;
+       			exit (1) ;
 			break;
 
 			//Fils
 			case 0 : 
-			close (p);
+			if (close (p) == -1 ){
+				perror ("Erreur de fermeture de la socket d'écoute") ;
+       			exit (1) ;
+			}
 			rendreService(servSock);
 		}
 
-		close(servSock); 
+		if (close(servSock)){
+			perror("Erreur de fermeture de la socket de service");
+			exit(1);
+		} 
 	}
 	return 0;
 }
