@@ -1,5 +1,4 @@
-
-#include "client.h"
+#include "../headers/client.h"
 
 
 
@@ -11,6 +10,8 @@ char* sendRequest (int p,char *request)
 	read(p,response,255);
 	return response;
 }
+
+//test
 
 //Prepare la requête à partir des données passées
 void prepareRequest(char** datas,char* request, int taille){ // [code,ville ... ]

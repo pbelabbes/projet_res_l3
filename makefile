@@ -1,10 +1,25 @@
-all : serveur client
+CC=gcc
+FLAGS= -Wall
+EXEC=serveur client
+SERVEUR = serveur/
+CLIENT = client/
+SRC=sources/
+HDR=headers/
+BIN=bin/
+
+
+
+
+all : $(EXEC)
+
+serveur : serveur.o 
+	$(CC) -o $(SERVEUR)$(BIN)$@ $(SERVEUR)$(BIN)$^ $(FLAGS)
+
+serveur.o : 
+	$(CC) -o $(SERVEUR)$(BIN)$@ -c $(SERVEUR)$(SRC)serveur.c $(FLAGS)
 
 client : client.o
-	gcc -o client client.o
+	$(CC) -o $(CLIENT)$(BIN)$@ $(CLIENT)$(BIN)$^ $(FLAGS)
 
-client.o : client.c
-	gcc -o client.o -c client.c -Wall
-
-serveur.o : serveur.c
-	gcc -o serveur.o -c serveur.c -Wall
+client.o : 
+	$(CC) -o $(CLIENT)$(BIN)$@ -c $(CLIENT)$(SRC)client.c $(FLAGS)

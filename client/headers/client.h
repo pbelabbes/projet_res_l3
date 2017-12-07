@@ -12,7 +12,7 @@
 #define TVILLE 500
 
 
-void sendRequest (int p,char *request);
+char* sendRequest (int p,char *request);
 void prepareRequest(char** datas,char* request, int taille);
 void IHM ( int p);
 	
