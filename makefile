@@ -23,3 +23,9 @@ client : client.o
 
 client.o :  
 	$(CC) -o $(CLIENT)$(BIN)$@ -c $(CLIENT)$(SRC)client.c -I $(CLIENT)$(HDR) $(FLAGS)
+
+clean : 
+	rm -rf $(SERVEUR)$(BIN)*.o $(CLIENT)$(BIN)*.o
+
+mrproper : clean
+	rm -rf $(SERVEUR)$(BIN)serveur $(CLIENT)$(BIN)client 
