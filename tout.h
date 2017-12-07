@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #define TMAX 500
 #define TAILLE_TAB 21
 
@@ -37,3 +38,6 @@ void afficher_train(InfosTrain train);
 InfosTrain prix_opti(llist l);
 char * train_liste(llist l);
 llist creation_liste_InfosTrains(InfosTrain info);
+void strtoupper(char *str);
+int castHeure(char *hDepart);
+llist trancheHoraire(InfosTrain tabTrains[],char *gDepart,char* gArrivee,char* hMin,char* hMax);
