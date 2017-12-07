@@ -7,6 +7,7 @@ char* sendRequest (int p,char *request)
 	char* response = malloc(255);
 	write (p,request, strlen(request));
 	printf("%s\n","En attente de réponse ..." );
+	//traiterRequest(request);
 	read(p,response,255);
 	return response;
 }
@@ -37,6 +38,9 @@ void IHM ( int p){
 	char request[1000];
 	char* response;
 	printf ("Binvenue \n");
+
+	while(1){
+
 	printf("code 1 : Premier train existant : \n \t - Ville de depart \n \t - Ville d'arrivee \n \t- Horaire de depart\n\n");
 	printf("code 2 : Liste des trains : \n \t - Ville de depart \n \t - Ville d'arrivee \n \t - Debut tranche horaire de depart \n \t - Fin tranche horaire de depart\n\n");
 	printf("code 3 : Liste des trains  : \n \t - Ville de depart \n \t - Ville d'arrivee \n\n");
@@ -132,7 +136,7 @@ void IHM ( int p){
 		printf("Mauvais code \n\n");
 		break;
 	}        
-
+	}
 }
 
 
