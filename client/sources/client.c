@@ -1,7 +1,7 @@
 #include "client.h"
 
 
-
+// l'envoi et la réception des requêtes
 char* sendRequest (int p,char *request)
 {
 	char* response = malloc(255);
@@ -37,13 +37,14 @@ void prepareRequest(char** datas,char* request, int taille){ // [code,ville ... 
 }
 
 
-
+// IHM pour récupère les informations de l'uilisateur
 void IHM ( int p){
 	int choix = -1, choix2 = -1;
 	char ville_depart[TVILLE], ville_arrivee[TVILLE];
 	char horaire[5], horaire_dep[5], horaire_fin[5];
 	char request[1000];
 	char* response;
+
 	printf ("Binvenue \n");
 
 	while(1){
@@ -180,7 +181,7 @@ int main(int argc,char *argv[]){
 	memcpy(&s.sin_addr.s_addr, h->h_addr,h->h_length);
 
 
-	/*demande de connexion  */
+	/*demande de connexion avec le serveur */
 	printf("%s\n"," demande de connexion " );
 
 	int erco = connect (p,(struct sockaddr*)&s, sizeof( struct sockaddr)); 

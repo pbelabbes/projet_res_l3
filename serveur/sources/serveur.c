@@ -1,5 +1,4 @@
-﻿/*auteurs soussi sirine, pierre baudriller , romain brunet , pierre belabbes  */
-#include "serveur.h"
+﻿#include "serveur.h"
 
 /*
 struct in_addr{
@@ -69,6 +68,7 @@ int main(int argc,char *argv[]){
 	/*Attachement de la socket d'écoute*/
 	printf("%s\n","bind de la socket d'écoute" );
 	bind(p,(struct sockaddr*) &s, sizeof(s));
+
 	
 	/*Ouverture de service sur la socket d'écoute */
 
@@ -76,6 +76,7 @@ int main(int argc,char *argv[]){
 	/*Boucle infinie*/
 	struct sockaddr_in client;
 	unsigned int c_length;
+
 	while(1){
 		printf("%s\n","Début d'écoute" );
 
