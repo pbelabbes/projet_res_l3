@@ -1,3 +1,4 @@
+
 #include "client.h"
 
 
@@ -5,21 +6,11 @@
 char* sendRequest (int p,char *request)
 {
 	char* response = malloc(255);
-	int taille = strlen(request);
-	int oWrite;
-	do{
-		oWrite = write (p,request,taille );
-		printf("oWrite %d\n",oWrite );
-	}while(oWrite != taille);
-
+	write (p,request, strlen(request));
 	printf("%s\n","En attente de réponse ..." );
-	//traiterRequest(request);
-	int taille = 255;
-	read(p,response,taille);
+	read(p,response,255);
 	return response;
 }
-
-//test
 
 //Prepare la requête à partir des données passées
 void prepareRequest(char** datas,char* request, int taille){ // [code,ville ... ]
@@ -42,12 +33,10 @@ void IHM ( int p){
 	int choix = -1, choix2 = -1;
 	char ville_depart[TVILLE], ville_arrivee[TVILLE];
 	char horaire[5], horaire_dep[5], horaire_fin[5];
+	char  m_prix [5],d_optimum[5];
 	char request[1000];
 	char* response;
 	printf ("Binvenue \n");
-
-	while(1){
-
 	printf("code 1 : Premier train existant : \n \t - Ville de depart \n \t - Ville d'arrivee \n \t- Horaire de depart\n\n");
 	printf("code 2 : Liste des trains : \n \t - Ville de depart \n \t - Ville d'arrivee \n \t - Debut tranche horaire de depart \n \t - Fin tranche horaire de depart\n\n");
 	printf("code 3 : Liste des trains  : \n \t - Ville de depart \n \t - Ville d'arrivee \n\n");
@@ -63,11 +52,14 @@ void IHM ( int p){
 		exit(1);
 		case 1:
 		printf("Ville de depart : ");
-		scanf("%s",ville_depart);
+		scanf("%[^\n]",ville_depart);
+		getchar();
 		printf("\nVille d'arrivee : ");
-		scanf("%s",ville_arrivee);
+		getchar();
+		scanf("%[^\n]",ville_arrivee);
 		printf("\nHoraire de depart (format hh:mm) : ");
-		scanf("%s",horaire);
+		getchar();
+		scanf("%[^\n]",horaire);
 
 
 		char* datas_1[4] = {"1",ville_depart,ville_arrivee,horaire};
@@ -82,13 +74,17 @@ void IHM ( int p){
 
 		case 2:
 		printf("Ville de depart : ");
-		scanf("%s",ville_depart);
+		getchar();
+		scanf("%[^\n]",ville_depart);
 		printf("\nVille d'arrivee : ");
-		scanf("%s",ville_arrivee);
-		printf("\nDebut tranche horaire de depart (format xxhyy) : ");
-		scanf("%s",horaire_dep);
+		getchar();
+		scanf("%[^\n]",ville_arrivee);
+		printf("%[^\n]Debut tranche horaire de depart (format xxhyy) : ");
+		getchar();
+		scanf("%[^\n]",horaire_dep);
 		printf("\nFIN tranche horaire de depart (format xxhyy) : ");
-		scanf("%s",horaire_fin);
+		getchar();
+		scanf("%[^\n]",horaire_fin);
 
 		char* datas_2[5]={"2",ville_depart,ville_arrivee,horaire_dep,horaire_fin};
 		prepareRequest(datas_2,request,5);
@@ -98,9 +94,11 @@ void IHM ( int p){
 
 		case 3:
 		printf("Ville de depart : ");
-		scanf("%s",ville_depart);
+		getchar();
+		scanf("%[^\n]",ville_depart);
 		printf("Ville d'arrivee : ");
-		scanf("%s",ville_arrivee);
+		getchar();
+		scanf("%[^\n]",ville_arrivee);
 
 		char* datas_3[4]={"3",ville_depart,ville_arrivee,"0"};
 		prepareRequest(datas_3,request,4);
@@ -143,7 +141,7 @@ void IHM ( int p){
 		printf("Mauvais code \n\n");
 		break;
 	}        
-	}
+
 }
 
 
@@ -157,6 +155,7 @@ int main(int argc,char *argv[]){
 	int i;
 	int p = socket(AF_INET,SOCK_STREAM,0);
 	struct hostent *h ;
+	char l[1000];
 
 	int numPort;
 
@@ -167,13 +166,15 @@ int main(int argc,char *argv[]){
 	s.sin_port = htons(numPort);
 	s.sin_family = AF_INET;
 	
+	//s.sin_port = htons(27000);
 	s.sin_addr.s_addr = htonl(INADDR_ANY);
-	printf("INADDR_ANY %u\n",INADDR_ANY );
 	for(i=0;i<8;i++){
 		s.sin_zero[i]=0;
 	}
 
+
 	/*recupération des information */
+	// gethostname(l,1000);									
 	h = gethostbyname("localhost");
 	printf("hostname %s\n", h->h_name);
 
@@ -185,8 +186,7 @@ int main(int argc,char *argv[]){
 
 	int erco = connect (p,(struct sockaddr*)&s, sizeof( struct sockaddr)); 
 	if (erco == -1){
-		perror("Erreur de connexion");
-		exit(1);
+		printf("%s\n", "erreur de connexion" );
 
 	}else printf("%s\n","connexion avec succès" );
 	
