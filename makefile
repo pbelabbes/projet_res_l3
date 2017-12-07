@@ -16,10 +16,10 @@ serveur : serveur.o
 	$(CC) -o $(SERVEUR)$(BIN)$@ $(SERVEUR)$(BIN)$^ $(FLAGS)
 
 serveur.o : 
-	$(CC) -o $(SERVEUR)$(BIN)$@ -c $(SERVEUR)$(SRC)serveur.c $(FLAGS)
+	$(CC) -o $(SERVEUR)$(BIN)$@ -c $(SERVEUR)$(SRC)serveur.c -I $(SERVEUR)$(HDR) $(FLAGS)
 
 client : client.o
 	$(CC) -o $(CLIENT)$(BIN)$@ $(CLIENT)$(BIN)$^ $(FLAGS)
 
-client.o : 
-	$(CC) -o $(CLIENT)$(BIN)$@ -c $(CLIENT)$(SRC)client.c $(FLAGS)
+client.o :  
+	$(CC) -o $(CLIENT)$(BIN)$@ -c $(CLIENT)$(SRC)client.c -I $(CLIENT)$(HDR) $(FLAGS)
