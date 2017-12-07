@@ -5,10 +5,17 @@
 char* sendRequest (int p,char *request)
 {
 	char* response = malloc(255);
-	write (p,request, strlen(request));
+	int taille = strlen(request);
+	int oWrite;
+	do{
+		oWrite = write (p,request,taille );
+		printf("oWrite %d\n",oWrite );
+	}while(oWrite != taille);
+
 	printf("%s\n","En attente de réponse ..." );
 	//traiterRequest(request);
-	read(p,response,255);
+	int taille = 255;
+	read(p,response,taille);
 	return response;
 }
 
@@ -160,15 +167,13 @@ int main(int argc,char *argv[]){
 	s.sin_port = htons(numPort);
 	s.sin_family = AF_INET;
 	
-	//s.sin_port = htons(27000);
 	s.sin_addr.s_addr = htonl(INADDR_ANY);
+	printf("INADDR_ANY %u\n",INADDR_ANY );
 	for(i=0;i<8;i++){
 		s.sin_zero[i]=0;
 	}
 
-
 	/*recupération des information */
-	// gethostname(l,1000);									
 	h = gethostbyname("localhost");
 	printf("hostname %s\n", h->h_name);
 
@@ -180,7 +185,8 @@ int main(int argc,char *argv[]){
 
 	int erco = connect (p,(struct sockaddr*)&s, sizeof( struct sockaddr)); 
 	if (erco == -1){
-		printf("%s\n", "erreur de connexion" );
+		perror("Erreur de connexion");
+		exit(1);
 
 	}else printf("%s\n","connexion avec succès" );
 	
