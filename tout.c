@@ -1,5 +1,62 @@
 #include "tout.h"
 
+//FONCTION QUI MET EN MAJ
+void strtoupper(char *str)
+{
+    for ( ; *str ; str++)
+        *str = toupper(*str);
+}
+
+//fonction qui cast une horaire de train en int
+int castHeure(char *hDepart)
+{
+	char *tmp=(char*)malloc(5*sizeof(char));
+	strcpy(tmp,hDepart);
+	char *heure=(char*)malloc(4*sizeof(char)),*minutes=(char*)malloc(2*sizeof(char));
+
+	heure=strtok(tmp, ":"); //Suppression des ':' entre les heures et les minutes
+	minutes=strtok(NULL, ":");
+	strcat(heure,minutes); //Concaténation des h et minutes pour le cast en int
+
+	return atoi(heure);
+}
+
+//Fonction qui affiche l'heure  la plus proche du prochain train partant de la gare gDepart
+llist trancheHoraire(InfosTrain tabTrains[],char *gDepart,char* gArrivee,char* hMin,char* hMax)
+{	//Variable de taille max à renvoyer à la fin de la fonction
+	int horaireD,min,max;
+	llist nouveau=NULL;
+	//Tableau pour stocker les numéro de trajet
+	int tab[TAILLE_TAB],indiceTab=0,i,gare=0;
+	
+	//Boucle pour stocker les numéros de trajet qui partent de la même gare que l'utilisateur 
+	for(gare=0;gare<TAILLE_TAB;gare++){
+		if(strcmp(tabTrains[gare].gareDepart,gDepart)==0 && strcmp(tabTrains[gare].gareArrivee,gArrivee)==0) {
+		//tab stock des entiers contenant les heures de depart
+			tab[indiceTab]=gare;
+			//On incrémente de 1 le nombre de valeur correspondante 
+			indiceTab++;
+		}
+	} 
+	
+	//cast en int de la tranche horaire de l'utilisateur :
+	min=castHeure(hMin);
+	max=castHeure(hMax);
+	
+	if(indiceTab>0){
+		//début test tranche horaire par une boucle
+		for(i=0;i<indiceTab;i++){
+			horaireD=castHeure(tabTrains[tab[i]].heureDepart);
+			//test si l'horaire des trains disponible est dans la tranche horaire saisie par l'utilisateur
+			//si oui ajoute dans la liste, sinon rien.
+			if((horaireD>=min) && (horaireD<=max)){
+				nouveau=ajouter_train_fin(nouveau,tabTrains[tab[i]]);
+			}
+		}
+	}
+	return nouveau;
+}
+
 //ajouter un train en tete de liste 
 llist ajouter_train_debut(llist l, InfosTrain info)
 {
@@ -103,7 +160,6 @@ float calcul_prix(float p_initial, char * reduc)
 	return p;
 }
 
-
 // renvoie un string avec toute les infos du train
 char * cast_train(InfosTrain train)
 {
@@ -144,7 +200,8 @@ char * train_liste(llist l)
 	return liste_train_cat;
 }
 
-/* inutile
+// inutile
+/*
 void afficher_liste_train(llist l)
 {
 	liste_train_t *tmp = l;
@@ -154,6 +211,28 @@ void afficher_liste_train(llist l)
 		printf("Ligne no \t : %d\n",i+1);
 
 		printf("%s \n",cast_train(tmp->t));
+		tmp = tmp->suiv;
+		i++;
+	}
+}*/
+
+/*
+void afficher_liste_train(llist l)
+{
+	liste_train_t *tmp = l;
+	int i=0;
+	while(tmp != NULL)
+	{
+		printf("Ligne no : %d\n",i+1);
+
+		printf("id :%d\n",tmp->t.id);
+		printf("Gare de depart :%s\n",tmp->t.gareDepart);
+		printf("Gare d'Arrivee :%s\n",tmp->t.gareArrivee);
+		printf("Heure de depart :%s\n",tmp->t.heureDepart);
+		printf("Heure d'arrivee :%s\n",tmp->t.heureArrivee);
+		printf("Prix :%.2f\n",tmp->t.Prix);
+		printf("Reduction : %s\n",tmp->t.reduction);
+
 		tmp = tmp->suiv;
 		i++;
 	}
@@ -176,7 +255,6 @@ char* duree_string(int difference)
 	strcat(temps,"min"); 
 	
 	return temps;
-	
 }
 
 //creer liste à 1 element à partir d'un InfosTrain
@@ -307,15 +385,19 @@ InfosTrain prix_opti(llist l)
 	return meilleur_prix;
 }
 
-
-int main(){
+int main()
+{
+	/* passer par uniquement une liste et plus de tableau */
+	/* reponse pertinente quand le client met une mauvaise heure (pas d'heure, heure incorrect, ...)
+	met une mauvaise ville (ville inexistante) ... */
 	char *train, *buf;
 	llist liste = NULL;
-
 	int i=0, bufsize = TMAX;
+	InfosTrain tabTrains[21];
+	char *trainrecherche=malloc(sizeof(char)*30),*heurerecherche=malloc(sizeof(char)*30),*heurerecherche2=malloc(sizeof(char)*30);
+	char *trainrecherche2=malloc(sizeof(char)*30);
 
 	train = (char *)malloc(TMAX);
-	InfosTrain tabTrains[21];
 	FILE *f = fopen("Trains.txt", "r");
 
 	if(f == NULL)
@@ -335,11 +417,13 @@ int main(){
 			buf = strtok(NULL, ";");
 			tabTrains[i].gareDepart = (char *) malloc(sizeof(char) * strlen(buf));
 			strcpy(tabTrains[i].gareDepart, buf);
-
+			strtoupper(tabTrains[i].gareDepart);
+			
 			buf = strtok(NULL, ";");
 			tabTrains[i].gareArrivee = (char *) malloc(sizeof(char) * strlen(buf));
 			strcpy(tabTrains[i].gareArrivee, buf);
-
+			strtoupper(tabTrains[i].gareArrivee);
+			
 			buf = strtok(NULL, ";");
 			tabTrains[i].heureDepart = (char *) malloc(sizeof(char) * strlen(buf));
 			strcpy(tabTrains[i].heureDepart, buf);
@@ -354,7 +438,8 @@ int main(){
 			buf = strtok(NULL, ";");
 			tabTrains[i].reduction = (char *) malloc(sizeof(char) * strlen(buf));
 			strcpy(tabTrains[i].reduction, buf);
-
+			
+			//ajout de la ligne dans une liste
 			liste = ajouter_train_fin(liste,tabTrains[i]);
 			i++;
 		}
@@ -362,16 +447,29 @@ int main(){
 		//afficher_train(duree_opti(liste));
 		//printf("%s\n",cast_train(tabTrains[0]));
 		//printf("%s\n",cast_train(prix_opti(liste)));
-		printf("liste train : \n\n %s \n", train_liste(liste));
+		/*printf("liste train : \n\n %s \n", train_liste(liste));
 
 		liste = creation_liste_InfosTrains(tabTrains[5]);
-		printf("liste train : \n\n %s \n", train_liste(liste));
+		printf("liste train : \n\n %s \n", train_liste(liste));*/
 
-		for(i=0;i<21;i++){
-			//printf("Ligne no : %d\n",i+1);
-			//afficher_train(tabTrains[i]);
-		}
-	}	
+		printf("De quel gare voulez vous partir ? \n");
+		scanf("%[^\n]",trainrecherche);
+		getchar();//Vider le stdin (le \n reste) avant d'utiliser le fgets
+		printf("Où voulez vous partir ? \n");
+		
+		scanf("%[^\n]",trainrecherche2);
+		
+		printf("heure min\n");
+		scanf("%s",heurerecherche);
+		printf("heure max\n");
+		scanf("%s",heurerecherche2);
+		
+		strtoupper(trainrecherche);
+		strtoupper(trainrecherche2);
+		
+		printf("liste train : \n\n %s \n", train_liste(trancheHoraire(tabTrains,trainrecherche,trainrecherche2,heurerecherche,heurerecherche2)));
+	}
+
 	free(train);
 	fclose(f);
 
