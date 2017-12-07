@@ -1,5 +1,5 @@
 ﻿/*auteurs soussi sirine, pierre baudriller , romain brunet , pierre belabbes  */
-#include "../headers/serveur.h"
+#include "serveur.h"
 
 /*
 struct in_addr{
