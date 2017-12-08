@@ -40,8 +40,13 @@ char * train_liste(llist l);
 llist creation_liste_InfosTrains(InfosTrain info);
 void strtoupper(char *str);
 int castHeure(char *hDepart);
-llist lire_fichier();
+llist trancheHoraire(InfosTrain tabTrains[],char *gDepart,char* gArrivee,char* hMin,char* hMax);
+char * prepareRequest(char *requete_client);
+//llist lire_fichier();
 llist element_i(llist liste, int indice);
 llist trancheHoraire_list(llist liste,char *gDepart,char* gArrivee,char* hMin,char* hMax);
-
-
+void triBulles(InfosTrain T[],int TT);
+InfosTrain premierTrainDispo(InfosTrain tab[],int TT,int horaire);
+llist listeTousLesTrains(InfosTrain tabTrains[],char *gDepart,char* gArrivee);
+llist trainSatisfaisant(InfosTrain tabTrains[],char *gDepart, char* gArrivee, char* hDepart);
+int castHeure2(char *hDepart);

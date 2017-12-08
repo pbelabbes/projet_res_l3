@@ -1,17 +1,6 @@
-﻿#include "serveur.h"
-
-/*
-struct in_addr{
-	u_long s_addr;
-};
-
-
-struct sockaddr_in{
-	short sin_family;lui donner la valeur AF_INET
-	u_short sin_port;Numéro de port
-	struct in_addr sin_addr;//ADresse de la machine
-	char sin_zero[8];//par défaut = 0
-};*/
+﻿/*auteurs Soussi Sirine, Pierre Baudriller , Romain Brunet , Pierre Belabbes  */
+#include "app.h"
+#include "serveur.h"
 
 /**
 	Recoit les données du client et envoit la réponse vers le client
@@ -21,12 +10,15 @@ int rendreService(int desc){
 	printf("%s\n","Prêt à rendre service" );
 	char recep[255];
 	int stop = 1;
+	char *response;
 
 	while(stop > 0){
 		stop = read(desc, recep, 255);
 		if(stop) printf("%s\n",recep); //1;params
-		//char* traiterRequete(char* requete);
-		write(desc,recep,255);
+		response=traiterRequete(recep);
+		printf(" %s\n",response);
+		
+		write(desc,response,strlen(response));
 	}
 
 	exit(0);
@@ -91,11 +83,9 @@ int main(int argc,char *argv[]){
 
 	/*Boucle infinie*/
 	struct sockaddr_in client;
-	unsigned int c_length;
-
+	int c_length;
 	while(1){
 		printf("%s\n","Début d'écoute" );
-
 		int servSock = accept(p, (struct sockaddr*) &client, &c_length);
 
 		printf("%s\n","connecté au client" );
