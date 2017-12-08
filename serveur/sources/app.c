@@ -662,7 +662,7 @@ char * traiterRequete(char *requete_client)
 	char *tmp = malloc(sizeof(char)*50);
 	InfosTrain tabTrains[21];
 
-	FILE *f = fopen("Trains.txt", "r");
+	FILE *f = fopen("../bin/Trains.txt", "r");
 	if(f == NULL)
 	{
 		printf("Erreur ouverture fichier \n");
@@ -704,49 +704,38 @@ char * traiterRequete(char *requete_client)
 				liste = ajouter_train_fin(liste,tabTrains[i]);
 				i++;
 			}
-			
 			strcpy(tmp, requete_client);
-			//printf("requete_client : %s \n", tmp);
 			choix1 = atoi(strtok(tmp, ";"));
 			tmp = strtok(NULL, ";");
 			strcpy(ville_depart,tmp);
-			//printf("ville dep : %s \n", ville_depart);
 			tmp = strtok(NULL, ";");
 			strcpy(ville_arrivee,tmp);
 			strtoupper(ville_depart);
 			strtoupper(ville_arrivee);
-			//printf("ville_arrivee : %s \n", ville_arrivee);
-		
+
 			switch(choix1)
 			{
 				case 1:
 				{
 					buf = strtok(NULL, ";");
 					strcpy(horaire_deb,buf);
-					//printf("horaire_deb : %s \n", horaire_deb);
-
 					liste = trainSatisfaisant(tabTrains,ville_depart,ville_arrivee,horaire_deb);
 					strcpy(retourner,train_liste(liste));
 					break;
 				}
 				case 2:
 				{
+
 					tmp = strtok(NULL, ";");
 					strcpy(horaire_deb,tmp);
-					//printf("horaire deb : %s \n", horaire_deb);
 					tmp = strtok(NULL, ";");
 					strcpy(horaire_fin,tmp);
-					//printf("horaire_fin : %s \n", tmp);
 					liste = trancheHoraire_list(liste,ville_depart,ville_arrivee,horaire_deb,horaire_fin);
 					strcpy(retourner,train_liste(liste));
-
 					break;
 				}
 				case 3:
 				{
-					/* a supprimer pour le client */
-					/*buf = strtok(NULL, ";");
-					buf = strtok(NULL, ";");*/
 					buf = strtok(NULL, ";");
 					choix2 = atoi(buf);
 					printf("choix 2 : %d \n", choix2);
@@ -775,13 +764,7 @@ char * traiterRequete(char *requete_client)
 				}
 			}	
 	}
-
 	free(train);
-	fclose(f);
+	//fclose(f);
 	return retourner;	
 }
-
-
-
-
-//FIN COPIER COLLER
