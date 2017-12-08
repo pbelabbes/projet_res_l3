@@ -5,10 +5,11 @@
 
 char* sendRequest (int p,char *request)
 {
-	char* response = malloc(255);
+	int taille = 10000;
+	char* response = malloc(taille);
 	write (p,request, strlen(request));
 	printf("%s\n","En attente de réponse ..." );
-	read(p,response,255);
+	read(p,response,taille);
 	return response;
 }
 
@@ -47,98 +48,101 @@ void IHM ( int p){
 		switch(choix)
 		{
 			case 0: 
-			printf("A bientot ! \n");
-			exit(1);
-			case 1:
-			getchar();
-			printf("Ville de depart : ");
-			scanf("%[^\n]",ville_depart);
-			printf("\nVille d'arrivee : ");
-			getchar();
-			scanf("%[^\n]",ville_arrivee);
-			printf("\nHoraire de depart (format hh:mm) : ");
-			getchar();
-			scanf("%[^\n]",horaire);
-
-
-			char* datas_1[4] = {"1",ville_depart,ville_arrivee,horaire};
-
-			prepareRequest(datas_1,request,4);
-			printf("%s\n",request);
-			response = sendRequest(p,request);
-			printf("%s\n",response );
-			break;
-
-
-
-			case 2:
-			printf("Ville de depart : ");
-			getchar();
-			scanf("%[^\n]",ville_depart);
-			printf("\nVille d'arrivee : ");
-			getchar();
-			scanf("%[^\n]",ville_arrivee);
-			printf("\nDebut tranche horaire de depart (format hh:mm) : ");
-			getchar();
-			scanf("%[^\n]",horaire_dep);
-			printf("\nFIN tranche horaire de depart (format hh:mm) : ");
-			getchar();
-			scanf("%[^\n]",horaire_fin);
-
-			char* datas_2[5]={"2",ville_depart,ville_arrivee,horaire_dep,horaire_fin};
-			prepareRequest(datas_2,request,5);
-			response = sendRequest(p,request);
-			printf("%s\n",response );
-			break;
-
-			case 3:
-			printf("Ville de depart : ");
-			getchar();
-			scanf("%[^\n]",ville_depart);
-			printf("Ville d'arrivee : ");
-			getchar();
-			scanf("%[^\n]",ville_arrivee);
-
-			char* datas_3[4]={"3",ville_depart,ville_arrivee,"0"};
-			prepareRequest(datas_3,request,4);
-			response = sendRequest(p,request);
-			printf("%s\n",response );
-		
-			/* affichage */
-
-			printf("Trier cette liste ? (0 si non) \n");
-			printf("code 1 : Trie par rapport au meilleur prix \n");
-			printf("code 2 : Trie par rapport au temps de trajet \n ");
-			scanf("%d", &choix2);
-
-			switch(choix2)
 			{
+				printf("A bientot ! \n");
+				exit(1);
+			}
+			case 1:
+			{
+				getchar();
+				printf("Ville de depart : ");
+				scanf("%[^\n]",ville_depart);
+				printf("\nVille d'arrivee : ");
+				getchar();
+				scanf("%[^\n]",ville_arrivee);
+				printf("\nHoraire de depart (format hh:mm) : ");
+				getchar();
+				scanf("%[^\n]",horaire);
 
-				case 1:
-				printf("%s\n","Choix n°1" ); 
-				char* datas_4[4]={"3",ville_depart,ville_arrivee,"1"};
-				prepareRequest(datas_4,request,4);
-				printf("%s\n",request);
-				response = sendRequest(p,request);
-				printf("%s\n",response );	
-				break;
-				case 2:
-				printf("%s\n","Choix 2" );
-				char* datas_5[4]={"3",ville_depart,ville_arrivee,"2"};
-				prepareRequest(datas_5,request,4);
+				char* datas_1[4] = {"1",ville_depart,ville_arrivee,horaire};
+
+				prepareRequest(datas_1,request,4);
 				printf("%s\n",request);
 				response = sendRequest(p,request);
 				printf("%s\n",response );
 				break;
 			}
-			break;
-			case 4 :
-			system("cat trains.txt");
-			printf("\n\n");
-			break;
-			default : 
-			printf("Mauvais code \n\n");
-			break;
+			case 2:
+			{
+				printf("Ville de depart : ");
+				getchar();
+				scanf("%[^\n]",ville_depart);
+				printf("\nVille d'arrivee : ");
+				getchar();
+				scanf("%[^\n]",ville_arrivee);
+				printf("\nDebut tranche horaire de depart (format hh:mm) : ");
+				getchar();
+				scanf("%[^\n]",horaire_dep);
+				printf("\nFIN tranche horaire de depart (format hh:mm) : ");
+				getchar();
+				scanf("%[^\n]",horaire_fin);
+
+				char* datas_2[5]={"2",ville_depart,ville_arrivee,horaire_dep,horaire_fin};
+				prepareRequest(datas_2,request,5);
+				response = sendRequest(p,request);
+				printf("%s\n",response );
+				break;
+			}
+			case 3:
+			{
+				printf("Ville de depart : ");
+				getchar();
+				scanf("%[^\n]",ville_depart);
+				printf("Ville d'arrivee : ");
+				getchar();
+				scanf("%[^\n]",ville_arrivee);
+
+				char* datas_3[4]={"3",ville_depart,ville_arrivee,"0"};
+				prepareRequest(datas_3,request,4);
+				response = sendRequest(p,request);
+				printf("%s\n",response);
+			
+				/* affichage */
+
+				printf("Trier cette liste ? (0 si non) \n");
+				printf("code 1 : Trie par rapport au meilleur prix \n");
+				printf("code 2 : Trie par rapport au temps de trajet \n ");
+				scanf("%d", &choix2);
+
+				switch(choix2)
+				{
+
+					case 1:
+						printf("%s\n","Choix n°1" ); 
+						char* datas_4[4]={"3",ville_depart,ville_arrivee,"1"};
+						prepareRequest(datas_4,request,4);
+						printf("%s\n",request);
+						response = sendRequest(p,request);
+						printf("%s\n",response );	
+						break;
+					case 2:
+						printf("%s\n","Choix 2" );
+						char* datas_5[4]={"3",ville_depart,ville_arrivee,"2"};
+						prepareRequest(datas_5,request,4);
+						printf("%s\n",request);
+						response = sendRequest(p,request);
+						printf("%s\n",response );
+						break;
+				}
+				break;
+				case 4 :
+					system("cat ../bin/trains.txt");
+					printf("\n\n");
+					break;
+				default : 
+					printf("Mauvais code \n\n");
+					break;
+			}
 		}
 	}        
 
