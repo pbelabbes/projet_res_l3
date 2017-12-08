@@ -12,8 +12,11 @@ BIN=bin/
 
 all : $(EXEC)
 
-serveur : serveur.o 
-	$(CC) -o $(SERVEUR)$(BIN)$@ $(SERVEUR)$(BIN)$^ $(FLAGS)
+serveur : serveur.o app.o
+	$(CC) -o $(SERVEUR)$(BIN)$@ $(SERVEUR)$(BIN)$< $(SERVEUR)$(BIN)app.o $(FLAGS)
+
+app.o : 
+	$(CC) -o $(SERVEUR)$(BIN)$@ -c $(SERVEUR)$(SRC)app.c -I $(SERVEUR)$(HDR) $(FLAGS)
 
 serveur.o : 
 	$(CC) -o $(SERVEUR)$(BIN)$@ -c $(SERVEUR)$(SRC)serveur.c -I $(SERVEUR)$(HDR) $(FLAGS)
