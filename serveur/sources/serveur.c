@@ -13,7 +13,7 @@ int rendreService(int desc){
 	char *response;
 
 	while(stop > 0){
-		stop = read(desc, recep, 255);
+		stop = read(desc, recep,1000);
 		if(stop) printf("%s\n",recep); //1;params
 		response=traiterRequete(recep);
 		printf(" %s\n",response);
