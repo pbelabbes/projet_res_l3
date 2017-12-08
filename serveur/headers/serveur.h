@@ -9,8 +9,8 @@
 #include <arpa/inet.h>
 #include <signal.h>
 #include <wait.h>
-
-
+#include <ctype.h>
+#include <string.h>
 
 int rendreService(int desc);
 void finfils(int sig);
