@@ -13,10 +13,9 @@ struct InfosTrain{
 	char * gareArrivee;
 	char * heureDepart;
 	char * heureArrivee;
-	float Prix;//PAs oublier De cAster le prix Du trAjet AvAnt De le stocker DAns le tAbleAu
+	float Prix;
 	char * reduction;
 };
-
 
 typedef struct liste_train
 {
@@ -78,8 +77,6 @@ char * cast_train(InfosTrain train);
 //renvoie un char* à partir d'une liste de train
 char * train_liste(llist l);
 
-
-
 //retourne la durée sous forme d'un string (pour l'afficher après par ex)
 char* duree_string(int difference);
 
@@ -93,7 +90,6 @@ InfosTrain duree_opti(llist l);
 
 
 InfosTrain prix_opti(llist l);
-
 
 char * traiterRequete(char *requete_client);
 
