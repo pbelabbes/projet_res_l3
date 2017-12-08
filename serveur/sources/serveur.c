@@ -1,41 +1,39 @@
-﻿/*auteurs Soussi Sirine, Pierre Baudriller , Romain Brunet , Pierre Belabbes  */
+/*auteurs Soussi Sirine, Pierre Baudriller , Romain Brunet , Pierre Belabbes  */
 #include "app.h"
 #include "serveur.h"
 
-/**
-	Recoit les données du client et envoit la réponse vers le client
-*/
+
 int rendreService(int desc){
 
 	printf("%s\n","Prêt à rendre service" );
-	char recep[255];
-	int stop = 1;
-	char *response;
+	int stop = 1, taille_buff=1000;
+	char *response =malloc(sizeof(char*)*taille_buff);
+	char *recep =malloc(sizeof(char*)*taille_buff);
+	//FILE *f = fopen("../bin/Trains.txt", "r");
 
 	while(stop > 0){
-		stop = read(desc, recep,1000);
-		if(stop) printf("%s\n",recep); //1;params
+		stop = read(desc, recep, 255);
+		if(stop) printf("%s\n",recep); 
 		response=traiterRequete(recep);
-		printf(" %s\n",response);
-		
 		write(desc,response,strlen(response));
 	}
+	free(recep);
+	free(response);
+	//fclose(f);
 
 	exit(0);
 }
 
-/**
-	handler réagissant au signal de mort d'un fils pour que le père acquiesse sa mort
-*/
+
 void finfils(int sig){
 
 	wait(0);
 }
 
-
+//Pour tester 'nc 127.0.0.1 27000'
 int main(int argc,char *argv[]){
 
-	/* Mise en place du handler */ 
+	/* Préparation de la gestion des fils*/ 
 
 	struct sigaction a;
 
@@ -43,10 +41,7 @@ int main(int argc,char *argv[]){
 
 	a.sa_flags = SA_RESTART;
 
-	if (sigaction(SIGCHLD, &a, NULL) == -1){
-		perror("Erreur de gestion de signal");
-		exit(1);
-	}
+	sigaction(SIGCHLD, &a, NULL);
 
 	/* Création de la socket d'écoute */
 
@@ -64,23 +59,13 @@ int main(int argc,char *argv[]){
 		s.sin_zero[i]=0;
 	}
 	
-	/* binding de la socket d'écoute */
-
+	/*Attachement de la socket d'écoute*/
 	printf("%s\n","bind de la socket d'écoute" );
-	if (bind(p,(struct sockaddr*) &s, sizeof(s)) == -1){
-		perror("Erreur de binding");
-		exit(1);
-	}
-
+	bind(p,(struct sockaddr*) &s, sizeof(s));
 	
 	/*Ouverture de service sur la socket d'écoute */
 
-	if (listen(p,4)){
-		perror("Erreur de mise en écoute");
-		exit(1);
-	}
-
-
+	listen(p,4);
 	/*Boucle infinie*/
 	struct sockaddr_in client;
 	int c_length;
@@ -94,22 +79,16 @@ int main(int argc,char *argv[]){
 			//Gestion d'erreur
 			case -1 :
 				perror ("fork") ;
-       			exit (1) ;
+       			exit (-1) ;
 			break;
 
 			//Fils
 			case 0 : 
-			if (close (p) == -1 ){
-				perror ("Erreur de fermeture de la socket d'écoute") ;
-       			exit (1) ;
-			}
+			close (p);
 			rendreService(servSock);
 		}
 
-		if (close(servSock)){
-			perror("Erreur de fermeture de la socket de service");
-			exit(1);
-		} 
+		close(servSock); 
 	}
 	return 0;
 }
